@@ -152,8 +152,14 @@ def format_output(df: pd.DataFrame) -> pd.DataFrame:
 # =========================
 # EXPORT
 # =========================
-from io import BytesIO
-
+def download_template():
+    with open("sample_template.xlsx", "rb") as f:
+        st.download_button(
+            label="📥 Tải file mẫu Excel",
+            data=f,
+            file_name="template_pipette_check.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
 def export_excel(df: pd.DataFrame) -> BytesIO:
     buffer = BytesIO()
 
@@ -419,6 +425,10 @@ def render_downloads(df: pd.DataFrame):
 # =========================
 def main():
     render_header()
+    # ===== DOWNLOAD TEMPLATE =====
+    st.subheader("Tải file mẫu Excel")
+    download_template()
+    st.markdown("---")
     # ===== METADATA =====
     metadata = render_metadata_form()
     if metadata is None:
