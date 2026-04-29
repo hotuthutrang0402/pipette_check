@@ -153,18 +153,21 @@ def format_output(df: pd.DataFrame) -> pd.DataFrame:
 # EXPORT
 # =========================
 def download_template():
-    with open("sample_template.xlsx", "rb") as f:
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(base_dir, "sample_template.xlsx")
+    if not os.path.isfile(file_path):
+        st.error(f"Không tìm thấy file mẫu tại: {file_path}")
+        return
+    with open(file_path, "rb") as f:
         st.download_button(
             label="📥 Tải file mẫu Excel",
             data=f,
-            file_name="template_pipette_check.xlsx",
+            file_name="template_pipette_qc.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
 def export_excel(df: pd.DataFrame) -> BytesIO:
     buffer = BytesIO()
-
     df_excel = df.copy()
-
     # ===== ENSURE NUMERIC =====
     cols_2dp = ["Thể tích danh định (µL)", 
                 "Mức kiểm tra (%)", 
